@@ -1,0 +1,6 @@
+@LarekApi_HostAddress = http://localhost:5048
+
+GET {{LarekApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
