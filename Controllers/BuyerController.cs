@@ -28,5 +28,11 @@ namespace LarekApi.Controllers
             var zakaz = _buyerService.OrderProduct(order);
             return Ok(zakaz.Result);
         }
+        [HttpPost("CanselProduct")]
+        public async Task<ActionResult> CanselOrder(string OrderId)
+        {
+            var deletedOrder = _buyerService.CancelProduct(OrderId);
+            return Ok(deletedOrder.Result);
+        }
     }
 }

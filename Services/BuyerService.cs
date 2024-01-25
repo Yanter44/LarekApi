@@ -9,13 +9,21 @@ namespace LarekApi.Services
     public class BuyerService : IBuyerService
     {
         private readonly ApplicationDb _context;
-        public BuyerService(ApplicationDb context)
+        private readonly OrderNumberGenerationService _orderNumberGeneratorService;
+        public BuyerService(ApplicationDb context, OrderNumberGenerationService orderNumberGeneratorService)
         {
             _context = context;
+            _orderNumberGeneratorService = orderNumberGeneratorService;
         }
-        public Task CancelProduct()
+        public async Task<string> CancelProduct(string orderId)
         {
-            //думаю
+            var existzakaz = _context.Orders.FirstOrDefault(x => x.OrderId == orderId);
+            if (existzakaz != null)
+            {
+                _context.Orders.Remove(existzakaz);
+                await _context.SaveChangesAsync();
+                return $"Your order is canceled";
+            }
             return null;
         }
 
@@ -49,20 +57,21 @@ namespace LarekApi.Services
                     allprice += zakaz.Price;
                 }
             }
+            string orderId = _orderNumberGeneratorService.GenerateUniqueOrderId();       
             OrderCustomer customer = new OrderCustomer()
             {
                 CustomerName = order.CustomerName,
                 Address = order.Address,
                 PhoneNumber = order.PhoneNumber,
                 Products = zakazik,
+                OrderId = orderId,
                 PriceList = allprice
-                
-            };
-           
+            };       
             await _context.Orders.AddAsync(customer);
             await _context.SaveChangesAsync();
-            return $"You made an order, your price list: {allprice}";
-
+            return $"You made an order, your price list: {allprice} . Your OrderId {orderId}";        
         }
+       
+       
     }
 }

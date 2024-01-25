@@ -8,6 +8,6 @@ namespace LarekApi.Interfaces
    
         public Task<ProductInfoDto> FindProduct(string ProductName);
         public Task<string> OrderProduct(OrderDto order);
-        public Task CancelProduct();
+        public Task<string> CancelProduct(string OrderId);
     }
 }

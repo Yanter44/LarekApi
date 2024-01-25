@@ -16,7 +16,6 @@ namespace LarekApi
             
             Database.EnsureCreated();
             Database.OpenConnection();
-        
             
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)

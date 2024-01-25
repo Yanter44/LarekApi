@@ -34,10 +34,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+app.UseMiddleware<MyMiddleWare>();
 app.UseRouting();
 app.UseHttpsRedirection();
 app.UseAuthorization();
-app.UseMiddleware<MyMiddleWare>();
 
 app.MapControllers();
 

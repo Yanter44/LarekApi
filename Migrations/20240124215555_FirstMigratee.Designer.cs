@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LarekApi.Migrations
 {
     [DbContext(typeof(ApplicationDb))]
-    [Migration("20240124165932_ThirdMigration")]
-    partial class ThirdMigration
+    [Migration("20240124215555_FirstMigratee")]
+    partial class FirstMigratee
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -54,6 +54,10 @@ namespace LarekApi.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("CustomerName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("OrderId")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
