@@ -3,6 +3,7 @@ using LarekApi.Interfaces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using MikesPaging.AspNetCore.Common.ViewModels;
 using Newtonsoft.Json;
 
 namespace LarekApi.Controllers
@@ -27,12 +28,12 @@ namespace LarekApi.Controllers
             return Ok();
         }
         [HttpGet("GetCategories")]
-        public async Task<ActionResult<Dictionary<string, List<string>>>> GetCategories()
+        public async Task<ActionResult<Dictionary<string, List<string>>>> GetCategories([FromQuery] PagingOptionsModel pagingOptionsModel)
         {
             try
             {
                 _logger.LogInformation("Start processing GetCategories method.");
-                var resultCategory = await _productService.GetCategories();
+                var resultCategory = await _productService.GetCategories(pagingOptionsModel);
                 return Ok(resultCategory);
             }
             catch (Exception ex)

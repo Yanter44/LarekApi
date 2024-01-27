@@ -4,6 +4,9 @@ using LarekApi.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.TagHelpers;
 using Microsoft.EntityFrameworkCore;
+using MikesPaging.AspNetCore;
+using MikesPaging.AspNetCore.Common.ViewModels;
+using MikesPaging.AspNetCore.Services.Interfaces;
 using Serilog;
 
 namespace LarekApi.Services
@@ -18,22 +21,20 @@ namespace LarekApi.Services
            
         }          
     
-        public async Task<Dictionary<string, List<string>>>  GetCategories()
+        public async Task<Dictionary<string, List<string>>>  GetCategories(PagingOptionsModel pagingOptionsModel)
         {
+            var categoriesWithProducts = await _context.Categories
+            .Include(c => c.Products)
+            .ToListAsync(); // Загрузка всех категорий с продуктами из базы данных
 
-            var categories = await _context.Categories.Include(p => p.Products).ToListAsync();
-            Dictionary<string, List<string>> result = new Dictionary<string, List<string>>();
-
-            foreach (var cat in categories)
-            {
-                var categoryProducts = _context.Products
-                    .Where(j => j.CategoryId == cat.Id)
-                    .Select(p => p.Name)
-                    .ToList();
-
-                result.Add(cat.Name, categoryProducts);
-            }
-            return result;
+            var paginatedResult = categoriesWithProducts
+                .Skip(pagingOptionsModel.PageIndex * pagingOptionsModel.PageSize)
+                .Take(pagingOptionsModel.PageSize)
+                .ToDictionary(
+                    c => c.Name, // Название категории в качестве ключа
+                    c => c.Products.Select(p => p.Name).ToList() // Список названий продуктов в категории
+                );
+            return paginatedResult;
         }
 
         public async Task AddCategory(string categoryName)

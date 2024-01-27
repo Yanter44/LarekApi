@@ -14,10 +14,10 @@ namespace LarekApi.Controllers
             _courierService = courierService;
         }
 
-        [HttpGet("СollectTheOrder")]
-        public async Task CollectOrder()
-        {
-            //??
-        }
+        //[HttpGet("СollectTheOrder")]
+        //public async Task CollectOrder()
+        //{
+            
+        //}
     }
 }

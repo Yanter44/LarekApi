@@ -4,6 +4,7 @@ using LarekApi.MiddleWares;
 using LarekApi.Services;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.EntityFrameworkCore;
+using MikesPaging.AspNetCore;
 using Serilog;
 using System.Globalization;
 
@@ -19,7 +20,9 @@ builder.Services.AddTransient<MyMiddleWare>();
 builder.Services.AddDbContext<ApplicationDb>(x => x.UseSqlServer("Server=DESKTOP-S9AIDDH\\SQLEXPRESS; Database=ApiLarok; Trusted_Connection=True; TrustServerCertificate=True"));
 builder.Services.AddTransient<IProductService, SelleryService>();
 builder.Services.AddTransient<IBuyerService, BuyerService>();
+builder.Services.AddScoped<OrderNumberGenerationService>();
 builder.Services.AddTransient<RequestDelegate>(_ => context => Task.CompletedTask);
+builder.Services.AddPaging();
 Log.Logger = new LoggerConfiguration()
              .MinimumLevel.Information()
              .WriteTo.Console()
